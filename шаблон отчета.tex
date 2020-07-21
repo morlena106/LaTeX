@@ -1,0 +1,124 @@
+\documentclass[12pt,a4paper]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{indentfirst}
+\usepackage{misccorr}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\begin{document}
+\begin{titlepage}
+  \begin{center}
+    \large
+ 
+    УНИВЕРСИТЕТ ИТМО
+    \vspace{0.25cm}
+     
+    Факультет Систем управления и робототехники
+     
+    Кафедра мехатроники
+    \vfill
+ 
+    \textsc{Отчет по лабораторной работе №1}\\[5mm]
+     
+    {\LARGE Работа с сервоприводом}
+
+\end{center}
+\vfill
+ 
+\newlength{\ML}
+\settowidth{\ML}{«\underline{\hspace{0.7cm}}» \underline{\hspace{2cm}}}
+\hfill\begin{minipage}{0.4\textwidth}
+  Руководитель: Куприянов Д.В.\\
+  Выполнила: Морозова Е.Д. \\
+  Студентка 1 курса группы Р3125\\
+  
+  
+\end{minipage}%
+\bigskip
+
+ 
+\begin{center}
+  Санкт-Петербург, 2018г.
+\end{center}
+\end{titlepage}
+
+\begin{tableofcontents}
+\end{tableofcontents}
+    \newpage
+    
+\section{Введение}
+
+\label{sec:intro}
+ 
+% Что должно быть во введении
+
+\subsection{Описание работы}
+Провести лабораторную работу по работе с сервоприводом при помощи микроконтроллера Arduino Uno и программы Arduino IDE.\\
+\\
+
+\subsection{Цель работы}
+Научиться работать с сервоприводом, управляя его работой с помощью микроконтроллера, решить сопутствующие проблемы, понять общий принцип работы с датчиками при помощи Arduino Uno и Arduino IDE.
+
+ 	\newpage
+ 
+\section{Оборудование, использованное в работе}
+\begin{figure}[h!]  
+	\centering
+	\includegraphics[width=0.5\textwidth]{pic1.eps} %тут в конце адрес картинки 
+	\caption{Микроконтроллер Arduino Uno} 
+	\label{image:pic1} %% внутренняя ссылка на картинку в рамках документа 
+\end{figure}	
+\begin{figure}[h!]  
+	\centering
+	\includegraphics[width=0.5\textwidth]{pic2.eps} %тут в конце адрес картинки 
+	\caption{Сервопривод} 
+	\label{image:pic2} %% внутренняя ссылка на картинку в рамках документа 
+\end{figure}
+  \newpage
+  \section{Ход работы}
+  \subsection{Схема подключения}
+  \begin{figure}[h!]  
+  	\centering
+  	\includegraphics[width=0.5\textwidth]{pic3.eps} %тут в конце адрес картинки 
+  	\caption{Схема подключения Сервопривода к Ардуино} 
+  	\label{image:pic3}
+  \end{figure}
+  \subsection{Код работы}
+ \begin{verbatim}
+byte x =0;
+void setup () {
+// put your setup code here , to run once :
+pinMode (12 , OUTPUT ) ;
+Serial . begin (9600) ;
+}
+void loop () {
+analogWrite (12 ,0) ;
+delay (600) ;
+x =0;
+while (x <255) {
+Serial . println ( x ) ;
+x = x +15;
+analogWrite (12 , x ) ;
+delay (1000) ;
+}
+}
+ \end{verbatim}
+  \newpage
+\section{Результат работы}
+\subsection{Таблица}
+
+\begin{tabular}{|p{8cm}|p{8cm}|}
+	\hline
+\centering	S &  Поведение Сервопривода \\ \hline
+0 & Исходное положение \\ \hline
++15 (х13) & Вал стабильно поворачивается на одинаковые углы по часовой стрелке при подаче одинаковых пределенных импульсов (15) \\ \hline
++15 & Вал поворачивается в обратную сторону \\ \hline
++15 & Сервопривод игнорирует сигналы, после чего возвращается в исходное положение  \\ \hline
+
+\end{tabular}
+\subsection{Принцип работы}
+Приводы подключаются к программируемым контроллерам, среди которых хорошо известен Arduino. Подключение к его плате производится тремя проводами. По двум подается питающее напряжение, а по третьему - управляющий сигнал. Инструкция сервопривода с цифровым управлением предусматривает наличие в контроллере простой программы, позволяющей считывать с потенциометра показания и переводить их в число. Затем оно преобразуется в команду передачи на поворот вала сервопривода в заданное положение. Программа записывается на диске, а затем передается на контроллер
+
+\subsection{Вывод по работе}
+Мы добились практически стабильной работы сервопривода, но отличающейся от теоретической идеальной модели в силу механических погрешностей, неисправностей и шумов в устройствах.
+\end{document}

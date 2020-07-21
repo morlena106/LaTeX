@@ -1,0 +1,186 @@
+\documentclass[12pt,a4paper]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{indentfirst}
+\usepackage{misccorr}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\begin{document}
+\begin{titlepage}
+  \begin{center}
+    \large
+ 
+    УНИВЕРСИТЕТ ИТМО
+    \vspace{0.25cm}
+     
+    Факультет Систем управления и робототехники
+     
+    Кафедра мехатроники
+    \vfill
+ 
+    \textsc{Отчет по лабораторной работе №4}\\[5mm]
+     
+    {\LARGE Исследование энтропии}
+
+\end{center}
+\vfill
+ 
+\newlength{\ML}
+\settowidth{\ML}{«\underline{\hspace{0.7cm}}» \underline{\hspace{2cm}}}
+\hfill\begin{minipage}{0.4\textwidth}
+  Руководитель: Куприянов Д.В.\\
+  Выполнила: Морозова Е.Д. \\
+  Студентка 1 курса группы Р3125\\
+  
+  
+\end{minipage}%
+\bigskip
+
+ 
+\begin{center}
+  Санкт-Петербург, 2018г.
+\end{center}
+\end{titlepage}
+
+\begin{tableofcontents}
+\end{tableofcontents}
+    \newpage
+    
+\section{Введение}
+
+\label{sec:intro}
+ 
+\subsection{Описание работы}
+Провести лабораторную работу по исследованию энтропии при помощи микроконтроллера Arduino Uno, различных датчиков и программы Arduino IDE.\\
+\\
+
+\subsection{Цель работы}
+Перебрать источники энтропии, получаемые со входа различных датчиков, в нашем случае сонара. Провести серию опытов, обработать и построить графики распределения случайных чисел, полученных на монитор серийного порта. 
+
+ 	\newpage
+ 
+\section{Оборудование, использованное в работе}
+\begin{figure}[h!]  
+	\centering
+	\includegraphics[width=0.5\textwidth]{pic1.eps} %тут в конце адрес картинки 
+	\caption{Микроконтроллер Arduino Uno} 
+	\label{image:pic1} %% внутренняя ссылка на картинку в рамках документа 
+\end{figure}	
+\begin{figure}[h!]  
+	\centering
+	\includegraphics[width=0.5\textwidth]{pic13.eps} %тут в конце адрес картинки 
+	\caption{Сонар} 
+	\label{image:pic10} %% внутренняя ссылка на картинку в рамках документа 
+\end{figure}
+  \newpage
+  \section{Ход работы}
+  \subsection{Схема подключения}
+  
+  \begin{figure}[h!]  
+  	\centering
+  	\includegraphics[width=0.5\textwidth]{pic14.eps} %тут в конце адрес картинки 
+  	\caption{Схема подключения сонара к Ардуино} 
+  	\label{image:pic11}
+  \end{figure}
+
+  \subsection{Код работы}
+  Программа считывания данных с сонара, графики распределения данных указаны в приложении на рис.4 и рис.5.
+ \begin{verbatim}
+int echoPin = 9; 
+int trigPin = 8; 
+
+void setup() { 
+Serial.begin (9600); 
+pinMode(trigPin, OUTPUT); 
+pinMode(echoPin, INPUT); 
+} 
+
+void loop() { 
+int duration, cm; 
+digitalWrite(trigPin, LOW); 
+delayMicroseconds(2); 
+digitalWrite(trigPin, HIGH); 
+delayMicroseconds(10); 
+digitalWrite(trigPin, LOW); 
+duration = pulseIn(echoPin, HIGH); 
+cm = duration / 58;
+Serial.print(cm); 
+Serial.println(" cm"); 
+delay(100);
+}
+ \end{verbatim}
+ 
+ Программа, снимающая шумы с портов и функцией рандом в лупе, графики распределения данных указаны в приложении на рис.6 и рис.7. 
+ \begin{verbatim} 
+ long randNumber;
+ #include <NewPing.h> //подключение библиотеки
+ 
+ #define TRIGGER_PIN 31 //пин подключения контакта Trig
+ #define ECHO_PIN 30 //Пин подключения контакта Echo
+ #define MAX_DISTANCE 700 //максимально-измеряемое расстояние
+ //создание объекта дальномера
+ NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE);
+ void setup() {
+ 	// put your setup code here, to run once:
+ 	Serial.begin(9600);
+ 	
+ }
+ 
+ void loop() {
+ 	randomSeed(analogRead(0));
+ 	randNumber = random(1000);
+ 	Serial.println(randNumber);
+ 	delay(100);// put your main code here, to run repeatedly:
+ 	
+ }
+ \end{verbatim}
+ 
+ Далее функция рандом была помещена в сетап, считаны шумы с портов и построены графики распределения данных, указанные в приложении на рис.8 и рис.9.
+ \newpage
+\section{Результат работы}
+
+\subsection{Вывод по работе}
+Нашей задачей было познакомиться с функцией рандом и ее использовании в ардуино, а так же исследовать энтропию пространства при помощи микроконтроллера ардуино и дальномера, что мы и сделали, простроив графики распределения. 
+
+\section{Приложения}
+ \begin{figure}[h!]  
+	\centering
+	\includegraphics[width=1\textwidth]{tabl1.eps} %тут в конце адрес картинки 
+	\caption{Таблица 1} 
+\end{figure}
+
+ \begin{figure}[h!]  
+	\centering
+	\includegraphics[width=1\textwidth]{tabl2.eps} %тут в конце адрес картинки 
+	\caption{Таблица 2} 
+
+\end{figure}
+
+ \begin{figure}[h!]  
+	\centering
+	\includegraphics[width=1\textwidth]{tabl3.eps} %тут в конце адрес картинки 
+	\caption{Таблица 3} 
+
+\end{figure}
+
+ \begin{figure}[h!]  
+	\centering
+	\includegraphics[width=1\textwidth]{tabl4.eps} %тут в конце адрес картинки 
+	\caption{Таблица 4} 
+
+\end{figure}
+
+ \begin{figure}[h!]  
+	\centering
+	\includegraphics[width=1\textwidth]{tabl5.eps} %тут в конце адрес картинки 
+	\caption{Таблица 5} 
+	
+\end{figure}
+
+ \begin{figure}[h!]  
+	\centering
+	\includegraphics[width=1\textwidth]{tabl6.eps} %тут в конце адрес картинки 
+	\caption{Таблица 6} 
+
+\end{figure}
+\end{document}

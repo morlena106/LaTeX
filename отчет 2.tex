@@ -1,0 +1,153 @@
+\documentclass[12pt,a4paper]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{indentfirst}
+\usepackage{misccorr}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\begin{document}
+\begin{titlepage}
+  \begin{center}
+    \large
+ 
+    УНИВЕРСИТЕТ ИТМО
+    \vspace{0.25cm}
+     
+    Факультет Систем управления и робототехники
+     
+    Кафедра мехатроники
+    \vfill
+ 
+    \textsc{Отчет по лабораторной работе №2}\\[5mm]
+     
+    {\LARGE Работа со сдвиговым регистром}
+
+\end{center}
+\vfill
+ 
+\newlength{\ML}
+\settowidth{\ML}{«\underline{\hspace{0.7cm}}» \underline{\hspace{2cm}}}
+\hfill\begin{minipage}{0.4\textwidth}
+  Руководитель: Куприянов Д.В.\\
+  Выполнила: Морозова Е.Д. \\
+  Студентка 1 курса группы Р3125\\
+  
+  
+\end{minipage}%
+\bigskip
+
+ 
+\begin{center}
+  Санкт-Петербург, 2018г.
+\end{center}
+\end{titlepage}
+
+\begin{tableofcontents}
+\end{tableofcontents}
+    \newpage
+    
+\section{Введение}
+
+\label{sec:intro}
+ 
+% Что должно быть во введении
+
+\subsection{Описание работы}
+Познакомимся со сдвиговым регистром 74HC595 и логикой его работы при помощи микроконтроллеров Arduino Uno, Arduino Mega и программы Arduino IDE.\\
+\\
+
+\subsection{Цель работы}
+Научиться работать со сдвиговым регистром, управляя его работой с помощью микроконтроллера, решить сопутствующие проблемы, добиться попеременного мигания подключенных светодиодов через регистр, понять общий принцип работы регистра при помощи Arduino Uno, Mega и Arduino IDE.
+
+ 	\newpage
+ 
+\section{Оборудование, использованное в работе}
+\begin{figure}[h!]  
+	\centering
+	\includegraphics[width=0.5\textwidth]{pic1.eps} %тут в конце адрес картинки 
+	\caption{Микроконтроллер Arduino Uno} 
+	\label{image:pic1} %% внутренняя ссылка на картинку в рамках документа 
+\end{figure}	
+\begin{figure}[h!]  
+	\centering
+	\includegraphics[width=0.5\textwidth]{pic4.eps} %тут в конце адрес картинки 
+	\caption{Сдвиговый регистр} 
+	\label{image:pic4} %% внутренняя ссылка на картинку в рамках документа 
+\end{figure}
+  \newpage
+  \section{Ход работы}
+  \subsection{Схема подключения}
+  \begin{figure}[h!]  
+  	\centering
+  	\includegraphics[width=1\textwidth]{pic5.eps} %тут в конце адрес картинки 
+  	\caption{Схема подключения} 
+  	\label{image:pic5}
+  \end{figure}
+   
+\subsection{Подключение к Ардуино}
+  \begin{figure}[h!]  
+	\centering
+	\includegraphics[width=0.5\textwidth]{pic7.eps} %тут в конце адрес картинки 
+	\caption{Подключение к Ардуино Уно} 
+	\label{image:pic7}
+\end{figure}
+
+  \begin{figure}[h!]  
+	\centering
+	\includegraphics[width=0.5\textwidth]{pic8.eps} %тут в конце адрес картинки 
+	\caption{Подключение к Ардуино Мега} 
+	\label{image:pic8}
+\end{figure}
+  \newpage
+  \subsection{Код работы}
+ \begin{verbatim}
+# include <SPI.h> 
+enum { REG_SELECT = 8 }; 
+void setup () 
+{ 
+SPI . begin () ; 
+pinMode ( REG_SELECT , OUTPUT ) ; 
+digitalWrite ( REG_SELECT , LOW ) ; 
+SPI . transfer (0) ; 
+digitalWrite ( REG_SELECT , HIGH ) ; 
+} 
+void rotateLeft ( uint8_t & bits ) 
+{ 
+uint8_t high_bit = bits & (1 « 7) ? 1 : 0; 
+bits = ( bits « 1) | high_bit ; 
+} 
+void loop () 
+{ 
+static uint8_t nomad = 1; 
+digitalWrite ( REG_SELECT , LOW ) ; 
+SPI . transfer ( nomad ) ; 
+digitalWrite ( REG_SELECT , HIGH ) ; 
+rotateLeft ( nomad ) ; 
+delay (1000)
+}
+ \end{verbatim} 
+ 
+\section{Результат работы}
+
+\subsection{Принцип работы}
+Использование сдвигового регистра позволит получить дополнительно 8  выхода, задействуя всего 3 выхода на Arduino. Причем это не предел, добавив еще одну микросхему получим на выходе уже 16 выходов, и так добавлять микросхемы можно до бесконечности, а на Arduino будут заняты всё те же 3 выхода. Считывать данные из регистра можно одновременно из всех ячеек. Именно это его свойство помогает нам работать с кучей светодиодов.
+
+  \begin{figure}[h!]  
+	\centering
+	\includegraphics[width=1\textwidth]{pic6.eps} %тут в конце адрес картинки 
+	\caption{Принципиальная схема подключения} 
+	\label{image:pic6}
+\end{figure}
+
+\newpage
+
+\subsection{Вывод по работе}
+Работа была выполнена, однако из-за плохо работающего регистра (сделать такой вывод нам позволило то, что мы работали с микроконтроллерами Arduino Mega и Arduino Uno, а результат был один) светодиоды мегали не стабильно, иногда не чередуясь, а горя все одновременно. Тем не менее принцип работы был ясен и понятен.
+
+  \begin{figure}[h!]  
+	\centering
+	\includegraphics[width=0.5\textwidth]{pic9.eps} %тут в конце адрес картинки 
+	\caption{Результат работы} 
+	\label{image:pic9}
+\end{figure}
+\end{document}

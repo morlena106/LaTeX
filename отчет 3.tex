@@ -1,0 +1,121 @@
+\documentclass[12pt,a4paper]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{indentfirst}
+\usepackage{misccorr}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\begin{document}
+\begin{titlepage}
+  \begin{center}
+    \large
+ 
+    УНИВЕРСИТЕТ ИТМО
+    \vspace{0.25cm}
+     
+    Факультет Систем управления и робототехники
+     
+    Кафедра мехатроники
+    \vfill
+ 
+    \textsc{Отчет по лабораторной работе №3}\\[5mm]
+     
+    {\LARGE Работа с дисплеем}
+
+\end{center}
+\vfill
+ 
+\newlength{\ML}
+\settowidth{\ML}{«\underline{\hspace{0.7cm}}» \underline{\hspace{2cm}}}
+\hfill\begin{minipage}{0.4\textwidth}
+  Руководитель: Куприянов Д.В.\\
+  Выполнила: Морозова Е.Д. \\
+  Студентка 1 курса группы Р3125\\
+  
+  
+\end{minipage}%
+\bigskip
+
+ 
+\begin{center}
+  Санкт-Петербург, 2018г.
+\end{center}
+\end{titlepage}
+
+\begin{tableofcontents}
+\end{tableofcontents}
+    \newpage
+    
+\section{Введение}
+
+\label{sec:intro}
+ 
+\subsection{Описание работы}
+Провести лабораторную работу по работе с дисплеем и понять принцип работы библиотек при помощи микроконтроллера Arduino Uno и программы Arduino IDE.\\
+\\
+
+\subsection{Цель работы}
+Научиться работать с дисплеем, управляя его работой с помощью микроконтроллера, решить сопутствующие проблемы, понять общий принцип работы с библиотека при помощи Arduino Uno и Arduino IDE.
+
+ 	\newpage
+ 
+\section{Оборудование, использованное в работе}
+\begin{figure}[h!]  
+	\centering
+	\includegraphics[width=0.5\textwidth]{pic1.eps} %тут в конце адрес картинки 
+	\caption{Микроконтроллер Arduino Uno} 
+	\label{image:pic1} %% внутренняя ссылка на картинку в рамках документа 
+\end{figure}	
+\begin{figure}[h!]  
+	\centering
+	\includegraphics[width=0.5\textwidth]{pic10.eps} %тут в конце адрес картинки 
+	\caption{LCD дисплей} 
+	\label{image:pic10} %% внутренняя ссылка на картинку в рамках документа 
+\end{figure}
+  \newpage
+  \section{Ход работы}
+  \subsection{Схема подключения}
+  
+  \begin{figure}[h!]  
+  	\centering
+  	\includegraphics[width=0.5\textwidth]{pic11.eps} %тут в конце адрес картинки 
+  	\caption{Схема подключения дисплея к Ардуино} 
+  	\label{image:pic11}
+  \end{figure}
+
+ \begin{figure}[h!]  
+	\centering
+	\includegraphics[width=0.5\textwidth]{pic12.eps} %тут в конце адрес картинки 
+	\caption{Наша схема} 
+	\label{image:pic12}
+\end{figure}
+  \subsection{Код работы}
+ \begin{verbatim}
+# include <Wire .h> 
+# include < LiquidCrystal_I2C .h> 
+LiquidCrystal_I2C lcd (0 x27 ,16 ,2) ;
+void setup () 
+{ 
+lcd . init () ; 
+lcd . backlight () ;
+lcd . print ("hello , Anton !") ; 
+lcd . setCursor (8 , 1) ; 
+lcd . print ("LCD ,1602 ") ; 
+} 
+void loop () 
+{ 
+lcd . setCursor (0 , 1) ; 
+lcd . print ( millis () /1000) ; 
+}
+
+
+ \end{verbatim}
+
+\section{Результат работы}
+
+\subsection{Принцип работы}
+Этот монохромный дисплей имеет опциональную подсветку и может отображать 2 строки по 16 символов. Разрешение символов — 5x8 точек. Существует поддержка кириллицы.
+
+\subsection{Вывод по работе}
+Одной из задач работы было попробовать самостоятельно написать библиотеку для работы с дисплеем, однако наши попытки оказались неудачными, что показывает всю сложность ее написания. Работа с готовой библиотекой для дисплея оказалась простой и прошла удачно. 
+\end{document}
